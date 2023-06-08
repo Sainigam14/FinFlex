@@ -104,7 +104,13 @@
 
 <body>
   {% include 'navbar.html' %}
-  {% include 'sidebar.html' %}
+  <div class="d-flex">
+    {% include 'sidebar.html' %}
+    <span style="width: 460px;"></span>
+  <div class="align-self-center pt-2" style="font-size: 39px;">
+    Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
+  </div>
+  </div>
 <div class="whole">
   <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
     <ul class="nav nav-pills flex-column">
@@ -174,7 +180,7 @@
     
   </div>
   
-  <div class="grid-container fs-5">
+  <div class="grid-container pt-3 fs-5">
     <div class="Total-Net-Worth fs-5 grid-item bg-primary text-light">
       Total Net Worth
       <div style="font-size: xx-large;">$ 1000000</div>

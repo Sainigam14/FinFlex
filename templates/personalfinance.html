@@ -19,10 +19,6 @@
       padding-bottom: 15px;
     }
 
-    .months{
-        display: flex;
-    }
-
     .btn:hover:not(:focus),
     .nav-link:hover:not(:focus) {
       outline: 1px solid black;
@@ -43,12 +39,27 @@
       font-size: 18px;
     }
 
+    .top-grid{
+      display: grid;
+      width: 1300px;
+      height: 635px;
+      grid-template-columns: 100px 1200px ;
+      grid-template-rows: 75px 560px ;
+    }
+
+    .months{
+      grid-row: span 2;
+    }
+
+    .popup{
+      padding-left: 130px;
+    }
+
     .grid-container{
       display: grid;
       position: relative;
       width: 1300px;
       height: 500px;
-      padding-top: 50px;
       grid-template-columns: 325px 325px 325px 325px;
       grid-template-rows: 100px 100px 100px 200px ;
       gap: 10px;
@@ -74,8 +85,8 @@
     Personal Finance
   </div>
   </div>
-    <div class="months">
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
+    <div class="top-grid">
+        <div class="d-flex months flex-column flex-shrink-0 p-3 bg-body-tertiary">
             <ul class="nav nav-pills flex-column">
               <hr>
               <li class="nav-item">
@@ -141,7 +152,15 @@
             </ul>
             <hr>
         </div>
-        <div class="grid-container fs-2">
+        {% if request.args.get('message') %}
+          <div class="col-12 popup d-flex justify-content-center align-items-end">
+            <div class="alert alert-success w-50 mb-0 alert-dismissible fade show" role="alert">
+              <strong>{{ request.args.get('message') }}</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+        {% endif %}
+            <div class="grid-container fs-2" style="padding-top : 30px">
             <div></div>
             <div class="Income grid-item">Income</div>
             <div class="Amount-1 grid-item">$ {{ total_income }}</div>

@@ -131,8 +131,8 @@
             <a class="nav-link active" aria-current="page" href="mailto:FinFlex@gmail.com?subject=%3CEnter%20your%20subject%3E&body=Name%20%3A%20%3CYour%20name%3E%0D%0A%0D%0AEmail%20%3A%20%3CYour%20email%3E%0D%0A%0D%0APhone%20Number%20%3A%20%3CYour%20phone%20number%3E%0D%0A%0D%0A%0D%0A%3CBody%3E%0D%0A%0D%0A%0D%0AYours%20Sincerely%2C%0D%0A%3CYour%20name%3E" style="font-size: large;">Contact Us</a>
           </li>
           <span style="width: 150px;"></span>
-          <li class="nav-item"><button class="login btn btn-dark" onclick="goToPage('/login')">Log In</button></li>
-          <li class="nav-item"><button class="btn btn-outline-dark" onclick="goToPage('/signup')">Sign Up</button></li>
+          <li class="nav-item"><a class="login btn btn-dark" href="{{ url_for('login') }}">Log In</a></li>
+          <li class="nav-item"><a class="btn btn-outline-dark" href="{{url_for('signup')}}">Sign Up</a></li>
           </li>  
         </ul>
       </div>
