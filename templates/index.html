@@ -105,7 +105,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href=" {{url_for('login')}} ">Home</a>
           </li>
             <li class="btn-group">
               <button class="nav-link active" onclick="redirectToDiv('Services')" style="font-size: large;">
@@ -147,7 +147,7 @@
         <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Personal finance made easy with <span style="color: #0d6efd;">FinFlex</span></h1>
         <p class="lead pt-4"><span>Welcome to FinFlex,</span> your ultimate personal finance solution. Take charge of your financial well-being with our intuitive platform. Track expenses, set budgets, and gain valuable insights through AI-powered analytics. Benefit from expert advice and robust security measures. <span>Join FinFlex now for a brighter financial future.</span></p>
         <div class="d-grid gap-2 d-md-flex pt-4 justify-content-md-start">
-          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2" onclick="goToPage('/login')">Get Started</button>
+          <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" href = "{{url_for('login')}} ">Get Started</a>
           <a type="button" href="mailto:FinFlex@gmail.com?subject=%3CEnter%20your%20subject%3E&body=Name%20%3A%20%3CYour%20name%3E%0D%0A%0D%0AEmail%20%3A%20%3CYour%20email%3E%0D%0A%0D%0APhone%20Number%20%3A%20%3CYour%20phone%20number%3E%0D%0A%0D%0A%0D%0A%3CBody%3E%0D%0A%0D%0A%0D%0AYours%20Sincerely%2C%0D%0A%3CYour%20name%3E" class="btn btn-outline-dark btn-lg px-4 me-md-2">Contact Us</a>
         </div>
       </div>
@@ -165,7 +165,7 @@
         </div>
         <h3 class="fs-2">Personal Finance</h3>
         <p>Empower your financial journey with our personalized personal finance services. From budgeting to investments, we offer tailored solutions to help you achieve your financial aspirations.</p>
-        <a href="#" class="icon-link">
+        <a href=" {{url_for('login')}} " class="icon-link">
           Let's Go >
           <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
         </a>
@@ -178,7 +178,7 @@
         </div>
         <h3 class="fs-2">Predictive Analysis</h3>
         <p>Unlock the power of predictive analysis with our advanced ML algoritms. Anticipate financial trends, make informed decisions, and stay ahead in managing your finances effectively for a secure future.</p>
-        <a href="#" class="icon-link">
+        <a href=" {{url_for('login')}} " class="icon-link">
           Let's Go >
           <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
         </a>
@@ -193,7 +193,7 @@
         </div>
         <h3 class="fs-2">Debt Tracker</h3>
         <p>Our debt tracking service offers a comprehensive solution to monitor and manage your debts efficiently, providing insights and tools for better financial management.</p>
-        <a href="#" class="icon-link">
+        <a href=" {{url_for('login')}} " class="icon-link">
           Let's Go >
           <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
         </a>
@@ -206,7 +206,7 @@
         </div>
         <h3 class="fs-2">Transactions</h3>
         <p>Streamline your transactions with our feature-rich solution. Effortlessly manage payments, track expenses, and access detailed transaction histories for a seamless and hassle-free financial experience.</p>
-        <a href="#" class="icon-link">
+        <a href=" {{url_for('login')}} " class="icon-link">
           Let's Go >
           <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
         </a>
@@ -310,10 +310,6 @@
 </html>
 
 <script>
-
-  function goToPage(path) {
-    window.location.href = path;
-  }
 
   function redirectToDiv(divId) {
     document.getElementById(divId).scrollIntoView({ behavior: 'smooth' });

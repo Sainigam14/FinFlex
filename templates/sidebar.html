@@ -13,7 +13,7 @@
     <div class="offcanvas-body">
       <ul class="navbar-nav justify-content-end flex-grow-1 fs-4">
         <li class="nav-item py-4">
-          <a class="nav-link btn active d-flex align-items-center ps-3" aria-current="page" href="{{ url_for('personalfinance') }}">
+          <a class="nav-link btn active d-flex align-items-center ps-3" aria-current="page" href="{{ url_for('personalfinance', month_id = month_id) }}">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center rounded-3 text-bg-primary bg-gradient p-2 fs-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 16">
                 <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>

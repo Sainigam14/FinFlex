@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, text, Column, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from datetime import datetime
 
 import os
 my_secret = os.environ['DB_details']
@@ -28,30 +29,41 @@ class User(Base):
         self.email = email
         self.password = password
 
-def total_expense(user_email):
-    with engine.connect() as conn:
-      query = text("SELECT COALESCE(SUM(amount), 0) AS total_amount FROM expense WHERE email = :user_email")
-      result = conn.execute(query, {"user_email" : user_email}).fetchone()
-      total_amount = result[0]
-      return int(total_amount)
-
-def total_income(user_email):
-  with engine.connect() as conn:
-    query = text("SELECT COALESCE(SUM(amount), 0) AS total_amount FROM income WHERE email = :user_email")
-    result = conn.execute(query, {"user_email" : user_email}).fetchone()
-    total_amount = result[0]
-    return int(total_amount)
-
 def store_expense(user_email, category, amount, date_time, description):
-  with engine.connect() as conn:
-    query = text("INSERT INTO expense (email, category, amount, date_time, description) VALUES (:user_email, :category, :amount, :date_time, :description)")
-    conn.execute(query, {"user_email" : user_email, "category": category, "amount": amount, "date_time": date_time, "description": description})
+    if not date_time:
+        # If date_time is not provided, use the current date and time
+        date_time = datetime.now()
+    else:
+        # Parse the provided date_time string into a datetime object
+        date_time = datetime.strptime(date_time, '%Y-%m-%dT%H:%M')
+
+    # Format the datetime object as a string in the MySQL TIMESTAMP format
+    date_time_formatted = date_time.strftime('%Y-%m-%d %H:%M:%S')
+
+    with engine.connect() as conn:
+      query = text("INSERT INTO expense (email, category, amount, date_time, description) VALUES (:user_email, :category, :amount, :date_time, :description)")
+      conn.execute(query, {"user_email": user_email, "category": category, "amount": amount, "date_time": date_time_formatted, "description": description})
+
 
 def store_income(user_email, category, amount, date_time, description):
   with engine.connect() as conn:
     query = text("INSERT INTO income (email, category, amount, date_time, description) VALUES (:user_email, :category, :amount, :date_time, :description)")
     conn.execute(query, {"user_email" : user_email, "category": category, "amount": amount, "date_time": date_time, "description": description})
 
+def get_total_expense_and_income(month_id, year, user_email):
+    with engine.connect() as conn:
+      
+        # Calculate total expense for the specified month
+        expense_query = text("SELECT COALESCE(SUM(amount), 0) AS total_expense FROM expense WHERE YEAR(date_time) = :year AND MONTH(date_time) = :month AND email = :user_email")
+        expense_result = conn.execute(expense_query, {"year": year, "month": month_id, "user_email": user_email})
+        total_expense = expense_result.fetchone()[0]
+      
+        # Calculate total income for the specified month
+        income_query = text("SELECT COALESCE(SUM(amount), 0) AS total_income FROM income WHERE YEAR(date_time) = :year AND MONTH(date_time) = :month AND email = :user_email")
+        income_result = conn.execute(income_query, {"year": year, "month": month_id, "user_email": user_email})
+        total_income = income_result.fetchone()[0]
+
+        return total_expense, total_income
 
 def get_expense():
   with engine.connect() as conn:

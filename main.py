@@ -1,5 +1,5 @@
-from flask import Flask, render_template, jsonify, request, redirect, session
-from database import engine, Session, User, total_expense, get_expense, total_income, store_expense,store_income
+from flask import Flask, render_template, jsonify, request, redirect, session, flash, url_for
+from database import engine, Session, User, get_expense, store_expense, store_income, datetime, get_total_expense_and_income
 
 app = Flask('__name__')
 app.secret_key = 'my_secret_key'
@@ -21,18 +21,20 @@ def filter_abs(value):
 def home():
   if 'user_email' in session:
         user_email = session['user_email']
+        month_id = int((datetime.now().month))
 
         db_session = Session()
         user = db_session.get(User, user_email)
         db_session.close()
 
-        return render_template('home.html', user=user)
+        return render_template('home.html', user=user, month_id=month_id)
 
     # User is not logged in, redirect to login page
   return redirect('/login')
   
-@app.route('/home/personalfinance', methods=['GET', 'POST'])
-def personalfinance():
+@app.route('/home/personalfinance/<month_id>', methods=['GET', 'POST'])
+def personalfinance(month_id):
+  year = datetime.now().year
   if 'user_email' in session:
     user_email = session['user_email']
     if request.method == 'POST':
@@ -43,22 +45,24 @@ def personalfinance():
         date_time = request.form.get('dateTimeInput')
         description = request.form.get('descriptionInput')
         store_expense(user_email, category, amount, date_time, description)
-        return redirect('/home/personalfinance?message=Successfully added expense details')
+        flash('Successfully added expense details', 'success')
+        return redirect(url_for('personalfinance', month_id=month_id))
       if form_name == 'income':
         category = request.form.get('categoryInput')
         amount = int(request.form.get('amountInput'))
         date_time = request.form.get('dateTimeInput')
         description = request.form.get('descriptionInput')
         store_income(user_email, category, amount, date_time, description)
-        return redirect('/home/personalfinance?message=Successfully added income details')
-    expense = total_expense(user_email)
-    income = total_income(user_email)
+        flash('Successfully added income details', 'success')
+        return redirect(url_for('personalfinance', month_id=month_id))
+    expense, income = get_total_expense_and_income(month_id, year, user_email)
+    print(expense, income)
     balance = income - expense
-    print(balance)
     return render_template('personalfinance.html',
-                           total_expense=expense,
-                           total_income=income,
-                           balance=balance)
+                            total_expense=expense,
+                            total_income=income,
+                            balance=balance,
+                            month_id=month_id)
   return redirect('/login')
 
 
