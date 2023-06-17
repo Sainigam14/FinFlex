@@ -76,7 +76,7 @@ def store_income(user_email, category, amount, date_time, description):
         "user_email": user_email,
         "category": category,
         "amount": amount,
-        "date_time": date_time,
+        "date_time": date_time_formatted,
         "description": description
       })
 
