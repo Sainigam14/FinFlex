@@ -95,74 +95,10 @@ display: block;
 Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
 </div>
 </div>
-<div class="whole">
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
-<ul class="nav nav-pills flex-column">
-<hr>
-<li class="nav-item">
-<a href="#" class="nav-link link-body-emphasis" aria-current="page">
-Jan
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Feb
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Mar
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Apr
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-May
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Jun
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Jul
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Aug
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Sep
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Oct
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Nov
-</a>
-</li>
-<li>
-<a href="#" class="nav-link link-body-emphasis">
-Dec
-</a>
-</li>
-</ul>
-<hr>
-
-</div>
+<div class="d-flex">
+  {% with template_name = 'home' %}
+    {% include 'months.html'%}
+  {% endwith %}
 
 <div class="grid-container pt-3 fs-5">
 <div class="Total-Net-Worth fs-5 grid-item bg-primary text-light">
