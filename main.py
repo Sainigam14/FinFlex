@@ -1,5 +1,5 @@
-from flask import Flask, render_template, jsonify, request, redirect, session, flash, url_for
-from database import engine, Session, User, get_expense, store_expense, store_income, datetime, get_total_expense_and_income
+from flask import Flask, render_template, request, redirect, session, flash, url_for
+from database import Session, User, store_expense, store_income, datetime, get_total_expense_and_income
 
 app = Flask('__name__')
 app.secret_key = 'my_secret_key'
@@ -8,9 +8,12 @@ app.secret_key = 'my_secret_key'
 def FinFlex():
   return render_template('index.html')
 
-@app.route('/signup')
-def sign():
-    return render_template('signup.html')
+@app.route('/home/blog')
+def blog():
+  if 'user_email' in session:
+        return render_template('blog.html')
+    # User is not logged in, redirect to login page
+  return redirect('/login')
 
 @app.template_filter('abs')
 def filter_abs(value):

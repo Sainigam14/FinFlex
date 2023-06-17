@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinFlex</title>
+<link rel="icon" type="favicon" href="{{ url_for('static', filename='Logo.ico') }}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body{
+background-color: #e3eefb;;
+}
+
+{% include 'navbarstyle.html' %}
+
+.btn:hover:not(:focus),
+.nav-link:hover:not(:focus) {
+outline: 1px solid black;
+border-radius: 5px;
+}
+
+@media (min-width: 992px) {
+.sidebar {
+display: block;
+}
+}
+</style>
+</head>
+
+<body>
+{% include 'navbar.html' %}
+<div class="d-flex">
+{% include 'sidebar.html' %}

@@ -1,216 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FinFlex</title>
-  <link rel="icon" type="favicon" href="./static/Logo.ico">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body{
-      background-color: #e3eefb;;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinFlex</title>
+<link rel="icon" type="favicon" href="{{ url_for('static', filename='Logo.ico') }}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body{
+background-color: #e3eefb;;
+}
 
-    .Logo {
-      height: 80px;
-    }
+{% include 'navbarstyle.html' %}
 
-    .container-fluid {
-      display: flex;
-      gap: 14rem;
-    }
+.btn:hover:not(:focus),
+.nav-link:hover:not(:focus) {
+outline: 1px solid black;
+border-radius: 5px;
+}
 
-    .collapse ul {
-      gap: 4rem;
-      align-items: center;
-    }
+.whole{
+display: flex;
+}
 
-    .collapse ul a {
-      font-size: 18px;
-    }
+.link-body-emphasis{
+padding-bottom: 15px;
+}
 
-    .btn:hover:not(:focus),
-    .nav-link:hover:not(:focus) {
-      outline: 1px solid black;
-      border-radius: 5px;
-    }
+.grid-container{
+display: grid;
+position: relative;
+width: 1300px;
+height: 630px;
+padding-left: 70px;
+grid-template-columns: 270px 170px 90px 260px 370px;
+grid-template-rows: 100px 50px 150px 300px;
+gap: 10px;
+}
 
-    .whole{
-      display: flex;
-    }
+.grid-item{
+background-color: white;
+border-radius: 20px;
+padding: 10px;
+padding-left: 20px;
+}
 
-    .link-body-emphasis{
-      padding-bottom: 15px;
-    }
+.Spendings{
+grid-column: span 2;
+grid-row: span 2;
+}
 
-    .grid-container{
-      display: grid;
-      position: relative;
-      width: 1300px;
-      height: 630px;
-      padding-left: 70px;
-      grid-template-columns: 270px 170px 90px 260px 370px;
-      grid-template-rows: 100px 50px 150px 300px;
-      gap: 10px;
-    }
+.Spendings-cat{
+grid-row: span 3;
+}
 
-    .grid-item{
-      background-color: white;
-      border-radius: 20px;
-      padding: 10px;
-      padding-left: 20px;
-    }
-    
-    .Spendings{
-      grid-column: span 2;
-      grid-row: span 2;
-    }
+.Income-Goal{
+grid-row: span 2;
+}
 
-    .Spendings-cat{
-      grid-row: span 3;
-    }
+.Income-Sources{
+grid-row: span 2;
+}
 
-    .Income-Goal{
-      grid-row: span 2;
-    }
+.Income{
+grid-column: span 2;
+}
 
-    .Income-Sources{
-      grid-row: span 2;
-    }
+.Dummy{
+grid-row: span 2;
+}
 
-    .Income{
-      grid-column: span 2;
-    }
+.Income-Expenses{
+grid-column: span 2;
+}
 
-    .Dummy{
-      grid-row: span 2;
-    }
+.Assests{
+grid-column: span 2;
+}
 
-    .Income-Expenses{
-      grid-column: span 2;
-    }
-
-    .Assests{
-      grid-column: span 2;
-    }
-
-    @media (min-width: 992px) {
-      .sidebar {
-        display: block;
-      }
-    }
-  </style>
+@media (min-width: 992px) {
+.sidebar {
+display: block;
+}
+}
+</style>
 </head>
 
 <body>
-  {% include 'navbar.html' %}
-  <div class="d-flex">
-    {% include 'sidebar.html' %}
-    <span style="width: 460px;"></span>
-  <div class="align-self-center pt-2" style="font-size: 39px;">
-    Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
-  </div>
-  </div>
+{% include 'navbar.html' %}
+<div class="d-flex">
+{% include 'sidebar.html' %}
+<span style="width: 460px;"></span>
+<div class="align-self-center pt-2" style="font-size: 39px;">
+Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
+</div>
+</div>
 <div class="whole">
-  <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
-    <ul class="nav nav-pills flex-column">
-      <hr>
-      <li class="nav-item">
-        <a href="#" class="nav-link link-body-emphasis" aria-current="page">
-          Jan
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Feb
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Mar
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Apr
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          May
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Jun
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Jul
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Aug
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Sep
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Oct
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Nov
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          Dec
-        </a>
-      </li>
-    </ul>
-    <hr>
-    
-  </div>
-  
-  <div class="grid-container pt-3 fs-5">
-    <div class="Total-Net-Worth fs-5 grid-item bg-primary text-light">
-      Total Net Worth
-      <div style="font-size: xx-large;">$ 1000000</div>
-    </div>
-    <div class="Spendings grid-item">Spendings</div>
-    <div class="Spendings-cat grid-item">Spendings Categories</div>
-    <div class="Income-Goal grid-item">Savings Goal</div>
-    <div class="Income-Sources grid-item">Income Sources</div>
-    <div class="Income grid-item">Income</div>
-    <div class="Dummy grid-item">Dummy</div>
-    <div class="Income-Expenses grid-item">Income & Expenses</div>
-    <div class="Assests grid-item">Assests</div>
-  </div>
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
+<ul class="nav nav-pills flex-column">
+<hr>
+<li class="nav-item">
+<a href="#" class="nav-link link-body-emphasis" aria-current="page">
+Jan
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Feb
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Mar
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Apr
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+May
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Jun
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Jul
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Aug
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Sep
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Oct
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Nov
+</a>
+</li>
+<li>
+<a href="#" class="nav-link link-body-emphasis">
+Dec
+</a>
+</li>
+</ul>
+<hr>
+
 </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-  
-  <script>
-    function redirectToDiv(divId) {
-      document.getElementById(divId).scrollIntoView({ behavior: 'smooth' });
-    }
+<div class="grid-container pt-3 fs-5">
+<div class="Total-Net-Worth fs-5 grid-item bg-primary text-light">
+Total Net Worth
+<div style="font-size: xx-large;">$ 1000000</div>
+</div>
+<div class="Spendings grid-item">Spendings</div>
+<div class="Spendings-cat grid-item">Spendings Categories</div>
+<div class="Income-Goal grid-item">Savings Goal</div>
+<div class="Income-Sources grid-item">Income Sources</div>
+<div class="Income grid-item">Income</div>
+<div class="Dummy grid-item">Dummy</div>
+<div class="Income-Expenses grid-item">Income & Expenses</div>
+<div class="Assests grid-item">Assests</div>
+</div>
+</div>
 
-    const sidebar = document.getElementById("sidebar");
-    const sidebarToggleBtn = document.getElementById("sidebarToggleBtn");
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 
-    sidebarToggleBtn.addEventListener("click", function() {
-      sidebar.classList.toggle("sidebar-hidden");
-    });
+<script>
+function redirectToDiv(divId) {
+document.getElementById(divId).scrollIntoView({ behavior: 'smooth' });
+}
 
-  </script>
+const sidebar = document.getElementById("sidebar");
+const sidebarToggleBtn = document.getElementById("sidebarToggleBtn");
+
+sidebarToggleBtn.addEventListener("click", function() {
+sidebar.classList.toggle("sidebar-hidden");
+});
+
+</script>
 </body>
 </html>

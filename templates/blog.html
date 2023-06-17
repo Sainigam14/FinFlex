@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="favicon" href="{{ url_for('static', filename='Logo.ico') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>FinFlex</title>
+  <style>
+    {% include 'navbarstyle.html' %}
+    
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    {% include 'navbar.html' %}
+  </header>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-center">
+      <h1 class="mb-4 fw-bold">Financial Blog</h1>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card h-100">
+          <img src="{{ url_for('static', filename='image1.jpg') }}" class="card-img-top" alt="Image 1">
+          <div class="card-body">
+            <h5 class="card-title">Embrace Technology</h5>
+            <p class="card-text">Explore digital banking options and mobile apps that offer high-yield savings accounts, round-up features, and automatic budgeting tools. These tools can help you effortlessly save and manage your money.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100">
+          <img src="{{ url_for('static', filename='image2.jpg') }}" class="card-img-top" alt="Image 2">
+          <div class="card-body">
+            <h5 class="card-title">Invest in the Gig Economy</h5>
+            <p class="card-text">Leverage the power of the gig economy by utilizing platforms that allow you to earn extra income in your spare time. Whether it's driving for a ride-sharing service, freelancing, or renting out your spare room through home-sharing platforms, these opportunities can boost your earnings and increase your financial flexibility.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100">
+          <img src="{{ url_for('static', filename='image3.jpg') }}" class="card-img-top" alt="Image 3">
+          <div class="card-body">
+            <h5 class="card-title">Diversify Your Investments</h5>
+            <p class="card-text">Beyond traditional stocks and bonds, consider investing in alternative assets like peer-to-peer lending, real estate crowdfunding, or even cryptocurrency. These options provide potential for higher returns and diversification in your investment portfolio.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="card h-100">
+          <img src="{{ url_for('static', filename='image4.jpg') }}" class="card-img-top" alt="Image 4">
+          <div class="card-body">
+            <h5 class="card-title">Automate Your Finances</h5>
+            <p class="card-text">Set up automatic transfers to your savings and investment accounts. By automating your finances, you ensure consistent contributions without the hassle of manual transfers, making it easier to reach your financial goals.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card h-100">
+          <img src="{{ url_for('static', filename='image5.jpg') }}" class="card-img-top" alt="Image 5">
+          <div class="card-body">
+            <h5 class="card-title">Prioritize Financial Education</h5>
+            <p class="card-text">Stay updated with the latest financial trends and strategies. Engage in online courses, webinars, and podcasts that cover personal finance topics. Building your knowledge will empower you to make informed decisions and navigate the ever-changing financial landscape.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'footer.html' %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
