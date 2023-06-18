@@ -84,17 +84,17 @@
           <tbody class="fs-5">  
             {% for transaction in transactions %}
             <tr>
-              <td class="ps-5">{{ transaction.ID }}</td>
-              <td>{{ transaction.category }}</td>
-              <td>{{ transaction.description }}</td>
-              <td>{{ transaction.transaction_date }}</td>
-              <td>{{ transaction.transaction_time }}</td>
+              <td class="ps-5" style="min-width: 2rem; max-width: 3rem;">{{ transaction.ID }}</td>
+              <td style="min-width: 3rem; max-width: 4rem;">{{ transaction.category }}</td>
+              <td style="min-width: 5rem; max-width: 15rem;">{{ transaction.description }}</td>
+              <td style="min-width: 4rem;">{{ transaction.transaction_date }}</td>
+              <td style="min-width: 3rem;">{{ transaction.transaction_time }}</td>
               {% if transaction.transaction_type == 'income' %}
-              <td class="text-success fw-bold">
+              <td class="text-success fw-bold" style="min-width: 3rem; max-width: 5rem;">
                 +$ {{ transaction.amount }}
               </td>
               {% else %}
-              <td class="text-danger fw-bold">
+              <td class="text-danger fw-bold" style="min-width: 3rem; max-width: 5rem;">
                 -$ {{ transaction.amount }}
               </td>
               {% endif %}
