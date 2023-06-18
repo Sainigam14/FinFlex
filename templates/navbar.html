@@ -1,44 +1,44 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <img class="Logo" src="{{ url_for('static', filename='FinFlex.svg') }}" alt="FinFlex Logo">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{url_for('home', month_id = month_id)}}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{url_for('blog')}}">Blog</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">About Us</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="mailto:FinFlex@gmail.com?subject=%3CEnter%20your%20subject%3E&body=Name%20%3A%20%3CYour%20name%3E%0D%0A%0D%0AEmail%20%3A%20%3CYour%20email%3E%0D%0A%0D%0APhone%20Number%20%3A%20%3CYour%20phone%20number%3E%0D%0A%0D%0A%0D%0A%3CBody%3E%0D%0A%0D%0A%0D%0AYours%20Sincerely%2C%0D%0A%3CYour%20name%3E" style="font-size: large;">Contact Us</a>
-          </li>
-          <span style="width: 13rem;"></span>
-          <div class="dropdown">
-            <button class="btn email btn-outline-dark rounded-3 dropdown-toggle px-2" type="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor"
-                class="bi bi-person-fill" viewBox="0 0 16 16">
-                <path
-                  d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-              </svg>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">Your Account</a></li>
-                <li><a class="dropdown-item" href="#">Help</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="{{url_for('signout')}}">Sign Out</a></li>
-            </ul>
-          </div>
-        </ul>
-      </div>
+<nav class="navbar navbar-expand-lg bg-white">
+  <div class="container-fluid">
+    <img class="Logo" src="{{ url_for('static', filename='FinFlex.svg') }}" alt="FinFlex Logo">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{url_for('home', month_id = month_id)}}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{url_for('blog')}}">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="mailto:FinFlex@gmail.com?subject=%3CEnter%20your%20subject%3E&body=Name%20%3A%20%3CYour%20name%3E%0D%0A%0D%0AEmail%20%3A%20%3CYour%20email%3E%0D%0A%0D%0APhone%20Number%20%3A%20%3CYour%20phone%20number%3E%0D%0A%0D%0A%0D%0A%3CBody%3E%0D%0A%0D%0A%0D%0AYours%20Sincerely%2C%0D%0A%3CYour%20name%3E" style="font-size: large;">Contact Us</a>
+        </li>
+        <span style="width: 13rem;"></span>
+        <div class="dropdown">
+          <button class="btn email btn-outline-dark rounded-3 dropdown-toggle px-2" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor"
+              class="bi bi-person-fill" viewBox="0 0 16 16">
+              <path
+                d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+            </svg>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Your Account</a></li>
+              <li><a class="dropdown-item" href="#">Help</a></li>
+              <li>
+                  <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{{url_for('signout')}}">Sign Out</a></li>
+          </ul>
+        </div>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
