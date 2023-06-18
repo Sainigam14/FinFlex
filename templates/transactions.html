@@ -24,12 +24,27 @@
       }
   
       .scrollable-table {
-        height: 75vh;
-        width: 90vw;
-        padding: 0rem 2rem;
-        overflow-y: auto;
-        overflow-x: hidden;
+      height: 75vh;
+      width: 87vw;
+      overflow-y: auto;
       }
+
+      .fixed-header {
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      z-index: 1;
+      }
+
+      /* .scrollable-table {
+      overflow-x: auto;
+      }
+      
+      .table-body-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+      } */
+
       
       @media (min-width: 992px) {
       .sidebar {
@@ -54,11 +69,11 @@
       {% include 'months.html'%}
       {% endwith %}
   
-      <div class="scrollable-table">
-        <table class="table scrollable-table table-striped table-sm">
-          <thead>
+      <div class="scrollable-table rounded-5 shadow-lg ms-5">
+        <table class="table table-striped table-lg ps-5">
+          <thead class="fixed-header">
             <tr>
-              <th scope="col">ID</th>
+              <th scope="col" class="ps-5">ID</th>
               <th scope="col">Category</th>
               <th scope="col">Description</th>
               <th scope="col">Date</th>
@@ -69,18 +84,18 @@
           <tbody>  
             {% for transaction in transactions %}
             <tr>
-              <td>{{transaction.ID}}</td>
-              <td>{{transaction.category}}</td>
-              <td>{{transaction.description}}</td>
-              <td>{{transaction.transaction_date}}</td>
-              <td>{{transaction.transaction_time}}</td>
+              <td class="ps-5">{{ transaction.ID }}</td>
+              <td>{{ transaction.category }}</td>
+              <td>{{ transaction.description }}</td>
+              <td>{{ transaction.transaction_date }}</td>
+              <td>{{ transaction.transaction_time }}</td>
               {% if transaction.transaction_type == 'income' %}
               <td class="text-success fw-bold">
-                +$ {{transaction.amount}}
+                +$ {{ transaction.amount }}
               </td>
               {% else %}
               <td class="text-danger fw-bold">
-                -$ {{transaction.amount}}
+                -$ {{ transaction.amount }}
               </td>
               {% endif %}
             </tr>
