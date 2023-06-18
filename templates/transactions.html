@@ -26,8 +26,9 @@
       .scrollable-table {
         height: 75vh;
         width: 90vw;
-        padding: 2rem;
+        padding: 0rem 2rem;
         overflow-y: auto;
+        overflow-x: hidden;
       }
       
       @media (min-width: 992px) {
@@ -60,18 +61,28 @@
               <th scope="col">ID</th>
               <th scope="col">Category</th>
               <th scope="col">Description</th>
-              <th scope="col">Date &amp; Time</th>
+              <th scope="col">Date</th>
+              <th scope="col">Time</th>
               <th scope="col">Amount</th>
             </tr>
           </thead>
           <tbody>  
             {% for transaction in transactions %}
             <tr>
-              <td>1</td>
+              <td>{{transaction.ID}}</td>
               <td>{{transaction.category}}</td>
               <td>{{transaction.description}}</td>
-              <td>{{transaction.date_time}}</td>
-              <td>{{transaction.amount}}</td>
+              <td>{{transaction.transaction_date}}</td>
+              <td>{{transaction.transaction_time}}</td>
+              {% if transaction.transaction_type == 'income' %}
+              <td class="text-success fw-bold">
+                +$ {{transaction.amount}}
+              </td>
+              {% else %}
+              <td class="text-danger fw-bold">
+                -$ {{transaction.amount}}
+              </td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>

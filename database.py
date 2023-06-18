@@ -111,9 +111,15 @@ def get_total_expense_and_income(month_id, year, user_email):
 
 def get_transactions(month_id, user_email):
   with engine.connect() as conn:
-    transactions_query = text("(SELECT * FROM expense WHERE email = :user_email AND MONTH(date_time) = :month_id)   UNION ALL   (SELECT * FROM income WHERE email = :user_email AND MONTH(date_time) = :month_id)")
-    result = conn.execute(transactions_query, {"month_id":month_id, "user_email":user_email})
+    transactions_query = text("SELECT 'expense' AS transaction_type, DATE(expense.date_time) AS transaction_date, TIME_FORMAT(expense.date_time, '%H:%i:%s') AS transaction_time, expense.* FROM expense WHERE email = :user_email AND MONTH(expense.date_time) = :month_id    UNION ALL    SELECT 'income' AS transaction_type, DATE(income.date_time) AS transaction_date, TIME_FORMAT(income.date_time, '%H:%i:%s') AS transaction_time, income.* FROM income WHERE email = :user_email AND MONTH(income.date_time) = :month_id    ORDER BY    transaction_date, transaction_time ASC")
+    result = conn.execute(transactions_query, {"month_id": month_id, "user_email": user_email})
     transactions = []
+    ID = 1
+
     for row in result.all():
-      transactions.append(row._asdict())
+        transaction_dict = row._asdict()
+        transaction_dict['ID'] = ID
+        transactions.append(transaction_dict)
+        ID += 1
+    
     return transactions
