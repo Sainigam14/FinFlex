@@ -98,7 +98,7 @@ def personalfinance(month_id):
       form_name = request.form.get('form_name')
       if form_name == 'expense':
         category = request.form.get('categoryInput')
-        amount = int(request.form.get('amountInput'))
+        amount = float(request.form.get('amountInput'))
         date_time = request.form.get('dateTimeInput')
         description = request.form.get('descriptionInput')
         store_expense(user_email, category, amount, date_time, description)
@@ -106,14 +106,13 @@ def personalfinance(month_id):
         return redirect(url_for('personalfinance', month_id=month_id))
       if form_name == 'income':
         category = request.form.get('categoryInput')
-        amount = int(request.form.get('amountInput'))
+        amount = float(request.form.get('amountInput'))
         date_time = request.form.get('dateTimeInput')
         description = request.form.get('descriptionInput')
         store_income(user_email, category, amount, date_time, description)
         flash('Successfully added income details', 'success')
         return redirect(url_for('personalfinance', month_id=month_id))
     expense, income = get_total_expense_and_income(month_id, year, user_email)
-    print(expense, income)
     balance = income - expense
     return render_template('personalfinance.html',
                            total_expense=expense,
@@ -127,7 +126,7 @@ def transactions(month_id):
   if 'user_email' in session:
     user_email = session['user_email']
     transactions = get_transactions(month_id, user_email)
-    return render_template('transactions.html', month_id=month_id)
+    return render_template('transactions.html', month_id=month_id, transactions=transactions)
   # User is not logged in, redirect to login page
   return redirect('/login')
 

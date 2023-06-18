@@ -86,7 +86,7 @@ def get_total_expense_and_income(month_id, year, user_email):
 
     # Calculate total expense for the specified month
     expense_query = text(
-      "SELECT COALESCE(SUM(amount), 0) AS total_expense FROM expense WHERE YEAR(date_time) = :year AND MONTH(date_time) = :month AND email = :user_email"
+      "SELECT COALESCE(ROUND(SUM(amount), 2), 0) AS total_expense FROM expense WHERE YEAR(date_time) = :year AND MONTH(date_time) = :month AND email = :user_email"
     )
     expense_result = conn.execute(expense_query, {
       "year": year,
@@ -97,7 +97,7 @@ def get_total_expense_and_income(month_id, year, user_email):
 
     # Calculate total income for the specified month
     income_query = text(
-      "SELECT COALESCE(SUM(amount), 0) AS total_income FROM income WHERE YEAR(date_time) = :year AND MONTH(date_time) = :month AND email = :user_email"
+      "SELECT COALESCE(ROUND(SUM(amount), 2), 0) AS total_income FROM income WHERE YEAR(date_time) = :year AND MONTH(date_time) = :month AND email = :user_email"
     )
     income_result = conn.execute(income_query, {
       "year": year,
@@ -109,10 +109,11 @@ def get_total_expense_and_income(month_id, year, user_email):
     return total_expense, total_income
 
 
-def get_transactions():
+def get_transactions(month_id, user_email):
   with engine.connect() as conn:
-    result = conn.execute(text("select * from expense where email = :user_email"))
+    transactions_query = text("(SELECT * FROM expense WHERE email = :user_email AND MONTH(date_time) = :month_id)   UNION ALL   (SELECT * FROM income WHERE email = :user_email AND MONTH(date_time) = :month_id)")
+    result = conn.execute(transactions_query, {"month_id":month_id, "user_email":user_email})
     transactions = []
     for row in result.all():
-      expenses.append(row._asdict())
-    return expenses
+      transactions.append(row._asdict())
+    return transactions

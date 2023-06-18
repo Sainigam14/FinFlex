@@ -1,76 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FinFlex</title>
-  <link rel="icon" type="favicon" href="{{ url_for('static', filename='Logo.ico') }}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body{
-    background-color: #e3eefb;;
-    }
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinFlex</title>
+    <link rel="icon" type="favicon" href="{{ url_for('static', filename='Logo.ico') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body{
+      background-color: #e3eefb;
+      }
+      
+      {% include 'navbarstyle.html' %}
+      
+      .btn:hover:not(:focus),
+      .nav-link:hover:not(:focus) {
+      outline: 1px solid black;
+      border-radius: 5px;
+      }
+      
+      .link-body-emphasis{
+      padding-bottom: 15px;
+      }
+  
+      .scrollable-table {
+        height: 75vh;
+        width: 90vw;
+        padding: 2rem;
+        overflow-y: auto;
+      }
+      
+      @media (min-width: 992px) {
+      .sidebar {
+      display: block;
+      }
+      }
+    </style>
+  </head>
+  
+  <body>
+    {% include 'navbar.html' %}
+    <div class="d-flex">
+      {% include 'sidebar.html' %}
+      <span style="width: 460px;"></span>
+    <div class="align-self-center fw-bolder" style="font-size: 44px;">
+      Transactions
+    </div>
+    </div>
+  
+    <div class="d-flex">
+      {% with template_name = 'transactions' %}
+      {% include 'months.html'%}
+      {% endwith %}
+  
+      <div class="scrollable-table">
+        <table class="table scrollable-table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+              <th scope="col">Date &amp; Time</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>  
+            {% for transaction in transactions %}
+            <tr>
+              <td>1</td>
+              <td>{{transaction.category}}</td>
+              <td>{{transaction.description}}</td>
+              <td>{{transaction.date_time}}</td>
+              <td>{{transaction.amount}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
     
-    {% include 'navbarstyle.html' %}
-    
-    .btn:hover:not(:focus),
-    .nav-link:hover:not(:focus) {
-    outline: 1px solid black;
-    border-radius: 5px;
-    }
-    
-    .link-body-emphasis{
-    padding-bottom: 15px;
-    }
-    
-    @media (min-width: 992px) {
-    .sidebar {
-    display: block;
-    }
-    }
-  </style>
-</head>
-
-<body>
-  {% include 'navbar.html' %}
-  <div class="d-flex">
-    {% include 'sidebar.html' %}
-    <span style="width: 460px;"></span>
-  <div class="align-self-center fw-bolder" style="font-size: 44px;">
-    Transactions
-  </div>
-  </div>
-
-  <div class="d-flex">
-    {% with template_name = 'transactions' %}
-    {% include 'months.html'%}
-    {% endwith %}
-
-    <table class="table table-striped table-sm">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Category</th>
-          <th scope="col">Amount</th>
-          <th scope="col">Date & Time</th>
-          <th scope="col">Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1,001</td>
-          <td>random</td>
-          <td>data</td>
-          <td>placeholder</td>
-          <td>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus saepe similique cum alias et velit eligendi voluptatem, autem odio qui asperiores sed sequi eaque soluta illum earum maiores ex reiciendis quas. Accusantium expedita et alias dolore, atque id beatae quo doloribus nisi recusandae, repudiandae quibusdam veniam reprehenderit quam dolorum, nostrum officia nulla? Accusantium a cumque sint ducimus sed laborum expedita enim officia? Ipsa tenetur cum error inventore, nobis, harum optio repellendus maiores quas dicta, velit illo explicabo. Illo odio impedit non aut obcaecati, odit eaque voluptas nam, sequi in nihil iure architecto esse magnam. Exercitationem consectetur quae quos unde ab. </td>
-        </tr>
-        <tr>
-          <td>1,001</td>
-          <td>random</td>
-          <td>data</td>
-          <td>placeholder</td>
-          <td>Lorem, </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
+    </script>
+  </body>
+</html>
