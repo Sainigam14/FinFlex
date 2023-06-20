@@ -11,6 +11,7 @@ def FinFlex():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+  month_id = '0' + str((datetime.now().month))
   if request.method == 'POST':
     email = request.form.get('email')
     password = request.form.get('password')
@@ -21,7 +22,6 @@ def login():
 
     if user and user.password == password:
       session['user_email'] = user.email
-      month_id = '0' + str((datetime.now().month))
       return redirect(url_for('home', month_id=month_id))
     elif not user:
       error_message = 'Please create an account'
@@ -29,12 +29,16 @@ def login():
     else:
       error_message = 'Invalid password'
       return render_template('login.html', error_message=error_message)
+  if 'user_email' in session:
+    return redirect(url_for('home', month_id=month_id))
 
+  # User is not logged in, redirect to login page
   return render_template('login.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+  month_id = '0' + str((datetime.now().month))
   if request.method == 'POST':
     firstname = request.form.get('firstname')
     lastname = request.form.get('lastname')
@@ -61,9 +65,10 @@ def signup():
     session['user_email'] = email
 
     # Redirect to the home page after successful signup
-    month_id = '0' + str((datetime.now().month))
     return redirect(url_for('home', month_id=month_id))
-
+  if 'user_email' in session:
+    return redirect(url_for('home', month_id=month_id))
+    
   # Render the signup form for GET requests
   return render_template('signup.html')
 
@@ -141,6 +146,5 @@ def blog():
 def signout():
   session.clear()
   return redirect('/')
-
 
 app.run(host='0.0.0.0', port=8080)
