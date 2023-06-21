@@ -81,15 +81,14 @@ def store_income(user_email, category, amount, date_time, description):
       })
 
 
-def get_total_expense_and_income(month_id, year, user_email):
+def get_total_expense_and_income(month_id, user_email):
   with engine.connect() as conn:
 
     # Calculate total expense for the specified month
     expense_query = text(
-      "SELECT COALESCE(ROUND(SUM(amount), 2), 0) AS total_expense FROM expense WHERE YEAR(date_time) = :year AND MONTH(date_time) = :month AND email = :user_email"
+      "SELECT COALESCE(ROUND(SUM(amount), 2), 0) AS total_expense FROM expense WHERE MONTH(date_time) = :month AND email = :user_email"
     )
     expense_result = conn.execute(expense_query, {
-      "year": year,
       "month": month_id,
       "user_email": user_email
     })
@@ -97,10 +96,9 @@ def get_total_expense_and_income(month_id, year, user_email):
 
     # Calculate total income for the specified month
     income_query = text(
-      "SELECT COALESCE(ROUND(SUM(amount), 2), 0) AS total_income FROM income WHERE YEAR(date_time) = :year AND MONTH(date_time) = :month AND email = :user_email"
+      "SELECT COALESCE(ROUND(SUM(amount), 2), 0) AS total_income FROM income WHERE MONTH(date_time) = :month AND email = :user_email"
     )
     income_result = conn.execute(income_query, {
-      "year": year,
       "month": month_id,
       "user_email": user_email
     })

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 from database import Session, User, store_expense, store_income, datetime, get_total_expense_and_income, get_transactions
+import plotly.graph_objects as go
 
 app = Flask('__name__')
 app.secret_key = 'my_secret_key'
@@ -8,6 +9,7 @@ app.secret_key = 'my_secret_key'
 @app.route('/')
 def FinFlex():
   return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -68,7 +70,7 @@ def signup():
     return redirect(url_for('home', month_id=month_id))
   if 'user_email' in session:
     return redirect(url_for('home', month_id=month_id))
-    
+
   # Render the signup form for GET requests
   return render_template('signup.html')
 
@@ -88,7 +90,40 @@ def home(month_id):
     user = db_session.get(User, user_email)
     db_session.close()
 
-    return render_template('home.html', user=user, month_id=month_id)
+    #Assests pie chart
+    data = {
+        'Gold': 10000,
+        'Stocks': 5000,
+        'Land': 40000,
+        'Cash': 10000
+    }
+
+    labels = list(data.keys())
+    values = list(data.values())
+
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0.5)])
+
+    fig.update_traces(textinfo='none')
+
+    fig.update_layout(
+      showlegend=False,  # Remove the legend
+      margin=dict(t=0, b=0, l=0, r=0),  # Remove chart margins
+      paper_bgcolor='rgba(0,0,0,0)',  # Set chart background color to transparent
+      plot_bgcolor=
+      'rgba(0,0,0,0)'  # Set plot area background color to transparent
+    )
+
+    pie_chart = fig.to_html(full_html=False, config={'displayModeBar': False})
+
+    #Calculating balance for savings goal
+    expense, income = get_total_expense_and_income(month_id, user_email)
+    balance = income - expense
+
+    return render_template('home.html',
+                           user=user,
+                           month_id=month_id,
+                           pie_chart=pie_chart,
+                           balance=balance)
 
   # User is not logged in, redirect to login page
   return redirect('/login')
@@ -96,7 +131,6 @@ def home(month_id):
 
 @app.route('/home/personalfinance/<month_id>', methods=['GET', 'POST'])
 def personalfinance(month_id):
-  year = datetime.now().year
   if 'user_email' in session:
     user_email = session['user_email']
     if request.method == 'POST':
@@ -117,7 +151,7 @@ def personalfinance(month_id):
         store_income(user_email, category, amount, date_time, description)
         flash('Successfully added income details', 'success')
         return redirect(url_for('personalfinance', month_id=month_id))
-    expense, income = get_total_expense_and_income(month_id, year, user_email)
+    expense, income = get_total_expense_and_income(month_id, user_email)
     balance = income - expense
     return render_template('personalfinance.html',
                            total_expense=expense,
@@ -126,14 +160,18 @@ def personalfinance(month_id):
                            month_id=month_id)
   return redirect('/login')
 
+
 @app.route('/home/transactions/<month_id>')
 def transactions(month_id):
   if 'user_email' in session:
     user_email = session['user_email']
     transactions = get_transactions(month_id, user_email)
-    return render_template('transactions.html', month_id=month_id, transactions=transactions)
+    return render_template('transactions.html',
+                           month_id=month_id,
+                           transactions=transactions)
   # User is not logged in, redirect to login page
   return redirect('/login')
+
 
 @app.route('/home/blog')
 def blog():
@@ -142,9 +180,11 @@ def blog():
   # User is not logged in, redirect to login page
   return redirect('/login')
 
+
 @app.route('/home/personalfinance/signout')
 def signout():
   session.clear()
   return redirect('/')
+
 
 app.run(host='0.0.0.0', port=8080)

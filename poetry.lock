@@ -87,6 +87,26 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "packaging"
+version = "23.1"
+description = "Core utilities for Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "plotly"
+version = "5.15.0"
+description = "An open-source, interactive data visualization library for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+packaging = "*"
+tenacity = ">=6.2.0"
+
+[[package]]
 name = "sqlalchemy"
 version = "2.0.15"
 description = "Database Abstraction Library"
@@ -122,6 +142,17 @@ pymysql = ["pymysql"]
 sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
+name = "tenacity"
+version = "8.2.2"
+description = "Retry code until it succeeds"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+doc = ["reno", "sphinx", "tornado (>=4.5)"]
+
+[[package]]
 name = "typing-extensions"
 version = "4.6.3"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -146,7 +177,7 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "42765935c2e4a181846283c8057c1789ba7e6d9a5a8bc5f81b9b23a82856b97a"
+content-hash = "23dfca7aa6a18ab9dcd7fac8c620ba819800be12517724c3262578bd6b6a4e3c"
 
 [metadata.files]
 blinker = []
@@ -157,6 +188,9 @@ greenlet = []
 itsdangerous = []
 jinja2 = []
 markupsafe = []
+packaging = []
+plotly = []
 sqlalchemy = []
+tenacity = []
 typing-extensions = []
 werkzeug = []
