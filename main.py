@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
-from database import Session, User, store_expense, store_income, datetime, get_total_expense_and_income, get_transactions
+from database import Session, User, store_expense, store_income, datetime, get_total_expense_and_income, get_transactions, store_asset, store_goal, get_assets_and_goal
 import plotly.graph_objects as go
 
 app = Flask('__name__')
@@ -81,25 +81,37 @@ def filter_abs(value):
 
 
 # Protected route for the dashboard
-@app.route('/home/<month_id>')
+@app.route('/home/<month_id>', methods=['GET', 'POST'])
 def home(month_id):
   if 'user_email' in session:
     user_email = session['user_email']
+
+    assets, goal_amount = get_assets_and_goal(user_email, month_id)
+
+    if request.method == 'POST':
+      form_name = request.form.get('form_name')
+      if form_name == 'assets':
+        category = request.form.get('categoryInput')
+        amount = float(request.form.get('amountInput'))
+        print(user_email, category, amount)
+        store_asset(user_email, category, amount)
+        # flash('Successfully added asset details', 'success')
+        return redirect(url_for('home', month_id=month_id))
+
+      if form_name == 'goal':
+        category = request.form.get('categoryInput')
+        amount = float(request.form.get('amountInput'))
+        store_goal(user_email, amount, month_id, goal_amount)
+        # flash('Successfully added Savings goal details', 'success')
+        return redirect(url_for('home', month_id=month_id))
 
     db_session = Session()
     user = db_session.get(User, user_email)
     db_session.close()
 
     #Assests pie chart
-    data = {
-        'Gold': 10000,
-        'Stocks': 5000,
-        'Land': 40000,
-        'Cash': 10000
-    }
-
-    labels = list(data.keys())
-    values = list(data.values())
+    labels = list(assets.keys())
+    values = list(assets.values())
 
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0.5)])
 
@@ -116,14 +128,16 @@ def home(month_id):
     pie_chart = fig.to_html(full_html=False, config={'displayModeBar': False})
 
     #Calculating balance for savings goal
-    expense, income = get_total_expense_and_income(month_id, user_email)
+    expense, income = get_total_expense_and_income(user_email, month_id)
     balance = income - expense
 
     return render_template('home.html',
                            user=user,
                            month_id=month_id,
                            pie_chart=pie_chart,
-                           balance=balance)
+                           balance=balance,
+                           goal_amount=goal_amount,
+                           assets=assets)
 
   # User is not logged in, redirect to login page
   return redirect('/login')
@@ -151,7 +165,7 @@ def personalfinance(month_id):
         store_income(user_email, category, amount, date_time, description)
         flash('Successfully added income details', 'success')
         return redirect(url_for('personalfinance', month_id=month_id))
-    expense, income = get_total_expense_and_income(month_id, user_email)
+    expense, income = get_total_expense_and_income(user_email, month_id)
     balance = income - expense
     return render_template('personalfinance.html',
                            total_expense=expense,
@@ -165,7 +179,7 @@ def personalfinance(month_id):
 def transactions(month_id):
   if 'user_email' in session:
     user_email = session['user_email']
-    transactions = get_transactions(month_id, user_email)
+    transactions = get_transactions(user_email, month_id)
     return render_template('transactions.html',
                            month_id=month_id,
                            transactions=transactions)

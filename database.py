@@ -66,7 +66,7 @@ def store_income(user_email, category, amount, date_time, description):
 
   # Format the datetime object as a string in the MySQL TIMESTAMP format
   date_time_formatted = date_time.strftime('%Y-%m-%d %H:%M:%S')
-  
+
   with engine.connect() as conn:
     query = text(
       "INSERT INTO income (email, category, amount, date_time, description) VALUES (:user_email, :category, :amount, :date_time, :description)"
@@ -81,7 +81,7 @@ def store_income(user_email, category, amount, date_time, description):
       })
 
 
-def get_total_expense_and_income(month_id, user_email):
+def get_total_expense_and_income(user_email, month_id):
   with engine.connect() as conn:
 
     # Calculate total expense for the specified month
@@ -107,17 +107,97 @@ def get_total_expense_and_income(month_id, user_email):
     return total_expense, total_income
 
 
-def get_transactions(month_id, user_email):
+def get_transactions(user_email, month_id):
   with engine.connect() as conn:
-    transactions_query = text("SELECT 'expense' AS transaction_type, DATE_FORMAT(expense.date_time, '%D %b %Y') AS transaction_date, TIME_FORMAT(expense.date_time, '%r') AS transaction_time, expense.* FROM expense WHERE email = :user_email AND MONTH(expense.date_time) = :month_id    UNION ALL    SELECT 'income' AS transaction_type, DATE_FORMAT(income.date_time, '%D %b %Y') AS transaction_date, TIME_FORMAT(income.date_time, '%r') AS transaction_time, income.* FROM income WHERE email = :user_email AND MONTH(income.date_time) = :month_id    ORDER BY    STR_TO_DATE(CONCAT(transaction_date, ' ', transaction_time), '%D %b %Y %r') ASC")
-    result = conn.execute(transactions_query, {"month_id": month_id, "user_email": user_email})
+    transactions_query = text(
+      "SELECT 'expense' AS transaction_type, DATE_FORMAT(expense.date_time, '%D %b %Y') AS transaction_date, TIME_FORMAT(expense.date_time, '%r') AS transaction_time, expense.* FROM expense WHERE email = :user_email AND MONTH(expense.date_time) = :month_id    UNION ALL    SELECT 'income' AS transaction_type, DATE_FORMAT(income.date_time, '%D %b %Y') AS transaction_date, TIME_FORMAT(income.date_time, '%r') AS transaction_time, income.* FROM income WHERE email = :user_email AND MONTH(income.date_time) = :month_id    ORDER BY    STR_TO_DATE(CONCAT(transaction_date, ' ', transaction_time), '%D %b %Y %r') ASC"
+    )
+    result = conn.execute(transactions_query, {
+      "month_id": month_id,
+      "user_email": user_email
+    })
     transactions = []
     ID = 1
 
     for row in result.all():
-        transaction_dict = row._asdict()
-        transaction_dict['ID'] = ID
-        transactions.append(transaction_dict)
-        ID += 1
-    
+      transaction_dict = row._asdict()
+      transaction_dict['ID'] = ID
+      transactions.append(transaction_dict)
+      ID += 1
+
     return transactions
+
+
+def store_asset(user_email, category, amount):
+  with engine.connect() as conn:
+    query = text(
+      "INSERT INTO assets (email, category, amount) VALUES (:user_email, :category, :amount) "
+    )
+    conn.execute(query, {
+      "user_email": user_email,
+      "category": category,
+      "amount": amount
+    })
+
+
+def store_goal(user_email, amount, month_id, goal_amount):
+  with engine.connect() as conn:
+    if(goal_amount):
+      query = text(
+        "UPDATE savings_goal SET amount = :amount WHERE month = :month_id"
+      )
+    else:
+      query = text(
+        "INSERT INTO savings_goal (email, amount, month) VALUES (:user_email, :amount, :month_id)"
+      )
+    conn.execute(
+      query, {
+        "user_email": user_email,
+        "amount": amount,
+        "month_id": month_id
+      })
+
+
+def get_assets_and_goal(user_email, month_id):
+  with engine.connect() as conn:
+    assets_query = text(
+      "SELECT category, ROUND(amount, 2) AS rounded_amount FROM assets WHERE email = :user_email")
+    assets_result = conn.execute(
+      assets_query, {
+        "user_email": user_email
+      }
+    )
+    assets = {}
+
+    for row in assets_result:
+      category = row.category
+      amount = row.rounded_amount
+
+      assets[category] = amount
+
+    goal_query = text(
+      "SELECT COALESCE(ROUND(amount, 2), 0) AS rounded_amount FROM savings_goal WHERE month = :month_id AND email = :user_email")
+    goal_result = conn.execute(
+      goal_query, {
+        "month_id": month_id,
+        "user_email": user_email
+      }
+    )
+
+    row = goal_result.fetchone()
+
+    if row is not None:
+        goal_amount = float(row[0])
+    else:
+        goal_amount = None
+    
+    return assets, goal_amount
+
+# income_query = text(
+#       "SELECT COALESCE(ROUND(SUM(amount), 2), 0) AS total_income FROM income WHERE MONTH(date_time) = :month AND email = :user_email"
+#     )
+#     income_result = conn.execute(income_query, {
+#       "month": month_id,
+#       "user_email": user_email
+#     })
+#     total_income = income_result.fetchone()[0]

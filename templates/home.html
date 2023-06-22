@@ -40,8 +40,7 @@ gap: 10px;
 .grid-item{
 background-color: white;
 border-radius: 20px;
-padding: 10px;
-padding-left: 20px;
+padding: 15px;
 }
 
 .Spendings{
@@ -53,7 +52,7 @@ grid-row: span 2;
 grid-row: span 3;
 }
 
-.Income-Goal{
+.Savings-Goal{
 grid-row: span 2;
 }
 
@@ -101,12 +100,14 @@ Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
 
 <div class="grid-container pt-1 ps-4 fs-5">
 <div class="Total-Net-Worth fs-5 grid-item bg-primary text-light">
-Total Net Worth
+<div class="fw-bold">Total Net Worth</div>
 <div style="font-size: xx-large;">$ 1000000</div>
 </div>
-<div class="Spendings grid-item">Spendings</div>
+<div class="Spendings grid-item">
+  <div class="text-primary fw-bold">Spendings</div>
+</div>
 <div class="Spendings-cat grid-item">
-  Spendings Categories
+  <div class="text-primary fw-bold">Spendings Categories</div>
   <div class="d-flex flex-column w-100 h-100 justify-content-evenly px-3 pb-5">
     <div class="d-flex w-100 align-items-center">
       <div class="feature-icon-small d-inline-flex align-items-center justify-content-center rounded-3 p-2" style="background-color: #636CEE; height: 2.5rem; width: 2.5rem;">
@@ -121,7 +122,7 @@ Total Net Worth
       </div>
     </div>
     <div class="d-flex w-100 align-items-center">
-      <div class="feature-icon-small d-inline-flex align-items-center justify-content-center rounded-3 p-2" style="background-color: #57BE91; height: 2.5rem; width: 2.5rem;">
+      <div class="feature-icon-small d-inline-flex align-items-center justify-content-center rounded-3 p-2" style="background-color: #5CC99A; height: 2.5rem; width: 2.5rem;">
         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="white" class="bi bi-people-fill" viewBox="0 0 16 16">
   <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
 </svg>
@@ -145,9 +146,9 @@ Total Net Worth
   </div>
     
 </div>
-<div class="Income-Goal grid-item">
-  <div class="d-flex justify-content-between mt-1 pe-2">
-    <div>Savings Goal</div>
+<div class="Savings-Goal grid-item">
+  <div class="d-flex justify-content-between pe-2">
+    <div class="text-primary fw-bold">Savings Goal</div>
     <div>
       <button type="button" class="btn btn-primary p-1" data-bs-toggle="modal" data-bs-target="#goalModal">
         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
@@ -158,15 +159,20 @@ Total Net Worth
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-2" id="goalModalLabel">Add Savings Goal</h1>
+              <h2 class="modal-title text-primary" id="goalModalLabel">Add Savings Goal</h2>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <form action="{{ url_for('home', month_id=month_id) }}" method="POST">
                 <input type="hidden" name="form_name" value="goal">
                 <div class="mb-3">
-                  <label for="amountInput" class="form-label fs-5">Amount<span class="text-danger">*</span></label>
-                  <input type="number" class="form-control" id="amountInput" name="amountInput" placeholder="Enter amount" step="0.01" required>
+                  {% if goal_amount %}
+                    <label for="amountInput" class="form-label fs-5">Update amount<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="amountInput" name="amountInput" placeholder="Enter amount" step="0.01" value="{{goal_amount}}" required>
+                  {% else %}
+                    <label for="amountInput" class="form-label fs-5">Amount<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="amountInput" name="amountInput" placeholder="Enter amount" step="0.01" required>
+                  {% endif %}
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -179,30 +185,46 @@ Total Net Worth
       </div>
     </div>
   </div>
-  <div class="d-flex fs-6 justify-content-between mt-2">
-    <div class="d=flex flex-column ms-2">
-      <p class="m-0">This month's progress : </p>
-      <h5 class="text-primary">{{(balance/20000)*100}}%</h5>
+  {% if goal_amount %}
+    <div>
+      <div class="d-flex fs-6 justify-content-between mt-2">
+        <div class="d=flex flex-column ms-2">
+          <p class="m-0">This month's progress : </p>
+          <h5 class="text-primary">{{((balance/goal_amount)*100) | round(2)}}%</h5>
+        </div>
+        <div class="fw-bold me-4">
+          $ {{balance}} / {{goal_amount}}
+        </div>
+      </div>
+      <div class="progress ms-2 me-4 mt-2" role="progressbar" aria-label="Animated striped example" aria-valuemin="0" aria-valuemax="100">
+        {% if ((balance/goal_amount)*100) < 100 %}
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: {{ (balance/goal_amount)*100 }}%"></div>
+        {% else %}
+          <div class="progress-bar bg-success" style="width: {{ (balance/goal_amount)*100 }}%"></div>
+        {% endif %}
+      </div>
     </div>
-    <div class="fw-bold me-4">
-      $ {{balance}} / 20000
+  {% else %}
+    <div class="d-flex h-75 justify-content-center align-items-center">
+      <h4 class="text-danger">Please set a savings goal for this month!!</h4>
     </div>
-  </div>
-  <div class="progress ms-2 me-4 mt-2" role="progressbar" aria-label="Animated striped example" aria-valuemin="0" aria-valuemax="100">
-    {% if ((balance/20000)*100) < 100 %}
-      <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: {{ (balance/20000)*100 }}%"></div>
-    {% else %}
-      <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: {{ (balance/20000)*100 }}%"></div>
-    {% endif %}
-  </div>
+  {% endif %}
 </div>
-<div class="Income-Sources grid-item">Income Sources</div>
-<div class="Income grid-item">Income</div>
-<div class="Dummy grid-item">Dummy</div>
-<div class="Income-Expenses grid-item">Income & Expenses</div>
+<div class="Income-Sources grid-item">
+  <div class="text-primary fw-bold">Income Sources</div>
+</div>
+<div class="Income grid-item">
+  <div class="text-primary fw-bold">Income</div>
+</div>
+<div class="Dummy grid-item">
+  <div class="text-primary fw-bold">Dummy</div>
+</div>
+<div class="Income-Expenses grid-item">
+  <div class="text-primary fw-bold">Income & Expenses</div>
+</div>
 <div class="Assests grid-item">
-  <div class="d-flex justify-content-between mt-1 pe-2">
-    <div>Assests</div>
+  <div class="d-flex justify-content-between pe-2">
+    <div class="text-primary fw-bold">Assests</div>
     <div>
       <button type="button" class="btn btn-primary p-1" data-bs-toggle="modal" data-bs-target="#assetsModal">
         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
@@ -213,7 +235,7 @@ Total Net Worth
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-2" id="assetsModalLabel">Add Asset</h1>
+        <h2 class="modal-title text-primary" id="assetsModalLabel">Add Asset</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -243,28 +265,15 @@ Total Net Worth
   </div>
   
   <div class="col">
-        <div class="row row-cols-1 row-cols-sm-2 g-2">
-          <div class="d-flex flex-column col m-0 ps-4 fs-6">
-            <p class="mb-0 text-body-emphasis fw-bold">Gold</p>
-            <p class="m-0">$ 10000</p>
-          </div>
-
-          <div class="d-flex flex-column col m-0 ps-5 fs-6">
-            <p class="mb-0 text-body-emphasis fw-bold">Stocks</p>
-            <p class="m-0">$ 5000</p>
-          </div>
-
-          <div class="d-flex flex-column col m-0 ps-4 fs-6">
-            <p class="mb-0 text-body-emphasis fw-bold">Land</p>
-            <p class="m-0">$ 40000</p>
-          </div>
-
-          <div class="d-flex flex-column col m-0 ps-5 fs-6">
-            <p class="mb-0 text-body-emphasis fw-bold">Cash</p>
-            <p class="m-0">$ 10000</p>  
-          </div>
+    <div class="row row-cols-1 row-cols-sm-2 ps-3 g-2">
+      {% for category, amount in assets.items() %}
+        <div class="d-flex flex-column col m-0 ps-4 fs-6">
+          <p class="mb-0 text-body-emphasis fw-bold">{{ category }}</p>
+          <p class="m-0">$ {{ amount }}</p>
         </div>
-      </div>
+      {% endfor %}
+    </div>
+  </div>
 </div>
 </div>
 </div>
