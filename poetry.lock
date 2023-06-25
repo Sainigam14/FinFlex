@@ -1,4 +1,16 @@
 [[package]]
+name = "bcrypt"
+version = "4.0.1"
+description = "Modern password hashing for your software and your servers"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+tests = ["pytest (>=3.2.1,!=3.3.0)"]
+typecheck = ["mypy"]
+
+[[package]]
 name = "blinker"
 version = "1.6.2"
 description = "Fast, simple object-to-object and broadcast signaling"
@@ -43,6 +55,18 @@ Werkzeug = ">=2.3.3"
 [package.extras]
 async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
+
+[[package]]
+name = "flask-bcrypt"
+version = "1.0.1"
+description = "Brcrypt hashing for Flask."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+bcrypt = ">=3.1.1"
+Flask = "*"
 
 [[package]]
 name = "greenlet"
@@ -177,13 +201,15 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "23dfca7aa6a18ab9dcd7fac8c620ba819800be12517724c3262578bd6b6a4e3c"
+content-hash = "202de20c01af0b3c3a5510393b9a19b7b812f73e1300afb521667a61d3875c81"
 
 [metadata.files]
+bcrypt = []
 blinker = []
 click = []
 colorama = []
 flask = []
+flask-bcrypt = []
 greenlet = []
 itsdangerous = []
 jinja2 = []

@@ -3,3 +3,4 @@ Gunicorn
 sqlalchemy
 pymysql
 plotly
+pandas

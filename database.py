@@ -193,11 +193,13 @@ def get_assets_and_goal(user_email, month_id):
     
     return assets, goal_amount
 
-# income_query = text(
-#       "SELECT COALESCE(ROUND(SUM(amount), 2), 0) AS total_income FROM income WHERE MONTH(date_time) = :month AND email = :user_email"
-#     )
-#     income_result = conn.execute(income_query, {
-#       "month": month_id,
-#       "user_email": user_email
-#     })
-#     total_income = income_result.fetchone()[0]
+def get_debts(user_email):
+  with engine.connect() as conn:
+    debts_query = text("SELECT * FROM debt_tracker WHERE email = :user_email")
+    result = conn.execute(debts_query, {"user_email": user_email})
+    debts = []
+
+    for row in result.all():
+      debt_dict = row._asdict()
+      debts.append(debt_dict)
+    return debts

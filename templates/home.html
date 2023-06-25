@@ -43,6 +43,10 @@ border-radius: 20px;
 padding: 15px;
 }
 
+.inner-shadow {
+box-shadow: inset 0px -7px 5px -5px rgba(0, 0, 0, 0.2);
+}
+
 .Spendings{
 grid-column: span 2;
 grid-row: span 2;
@@ -110,7 +114,7 @@ Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
   <div class="text-primary fw-bold">Spendings Categories</div>
   <div class="d-flex flex-column w-100 h-100 justify-content-evenly px-3 pb-5">
     <div class="d-flex w-100 align-items-center">
-      <div class="feature-icon-small d-inline-flex align-items-center justify-content-center rounded-3 p-2" style="background-color: #636CEE; height: 2.5rem; width: 2.5rem;">
+      <div class="feature-icon-small d-inline-flex align-items-center justify-content-center rounded-3 p-2" style="background-color: #656EF2; height: 2.5rem; width: 2.5rem;">
         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="white" class="bi bi-house-fill" viewBox="0 0 16 16">
   <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
   <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
@@ -133,7 +137,7 @@ Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
       </div>
     </div>
     <div class="d-flex w-100 align-items-center">
-      <div class="feature-icon-small d-inline-flex align-items-center justify-content-center rounded-3 p-2" style="background-color: #D45C43; height: 2.5rem; width: 2.5rem;">
+      <div class="feature-icon-small d-inline-flex align-items-center justify-content-center rounded-3 p-2" style="background-color: #DD6046; height: 2.5rem; width: 2.5rem;">
         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="white" class="bi bi-bus-front-fill" viewBox="0 0 16 16">
   <path d="M16 7a1 1 0 0 1-1 1v3.5c0 .818-.393 1.544-1 2v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5V14H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2a2.496 2.496 0 0 1-1-2V8a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1V2.64C1 1.452 1.845.408 3.064.268A43.608 43.608 0 0 1 8 0c2.1 0 3.792.136 4.936.268C14.155.408 15 1.452 15 2.64V4a1 1 0 0 1 1 1v2ZM3.552 3.22A43.306 43.306 0 0 1 8 3c1.837 0 3.353.107 4.448.22a.5.5 0 0 0 .104-.994A44.304 44.304 0 0 0 8 2c-1.876 0-3.426.109-4.552.226a.5.5 0 1 0 .104.994ZM8 4c-1.876 0-3.426.109-4.552.226A.5.5 0 0 0 3 4.723v3.554a.5.5 0 0 0 .448.497C4.574 8.891 6.124 9 8 9c1.876 0 3.426-.109 4.552-.226A.5.5 0 0 0 13 8.277V4.723a.5.5 0 0 0-.448-.497A44.304 44.304 0 0 0 8 4Zm-3 7a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm8 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-7 0a1 1 0 0 0 1 1h2a1 1 0 1 0 0-2H7a1 1 0 0 0-1 1Z"/>
 </svg>
@@ -212,6 +216,9 @@ Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
 </div>
 <div class="Income-Sources grid-item">
   <div class="text-primary fw-bold">Income Sources</div>
+  <div>
+    {{ sources_graph | safe }}
+  </div>
 </div>
 <div class="Income grid-item">
   <div class="text-primary fw-bold">Income</div>
@@ -260,11 +267,11 @@ Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
 </div>
     </div>
   </div>
-  <div class="overflow-x-hidden overflow-y-auto" style="height: 14.5rem">
+  <div class="inner-shadow rounded-3 overflow-x-hidden overflow-y-auto" style="height: 14.5rem">
     <div class="d-flex w-100 justify-content-center pe-4" style = "height: 9rem; width: 9rem;">
     {{pie_chart | safe}}
     </div>
-    <div class="col">
+    <div class="col pt-2">
       <div class="row row-cols-1 row-cols-sm-2 ps-3 g-2">
         {% for category, amount in assets.items() %}
           <div class="d-flex flex-column col m-0 ps-4 fs-6">
