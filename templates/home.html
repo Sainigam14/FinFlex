@@ -43,10 +43,6 @@ border-radius: 20px;
 padding: 15px;
 }
 
-.inner-shadow {
-box-shadow: inset 0px -7px 5px -5px rgba(0, 0, 0, 0.2);
-}
-
 .Spendings{
 grid-column: span 2;
 grid-row: span 2;
@@ -267,7 +263,7 @@ Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
 </div>
     </div>
   </div>
-  <div class="inner-shadow rounded-3 overflow-x-hidden overflow-y-auto" style="height: 14.5rem">
+  <div class="rounded-3 overflow-x-hidden overflow-y-auto" style="height: 14.5rem">
     <div class="d-flex w-100 justify-content-center pe-4" style = "height: 9rem; width: 9rem;">
     {{pie_chart | safe}}
     </div>

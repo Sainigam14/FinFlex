@@ -5,9 +5,9 @@ from datetime import datetime
 
 import os
 
-my_secret = os.environ['DB_details']
+# my_secret = os.environ['DB_details']
 
-engine = create_engine(my_secret,
+engine = create_engine("mysql+pymysql://aud81kobxsrjk3n3u672:pscale_pw_FTPeNrPOUimb1OY27o5GGtswAkK26h8st3XDEprE6tW@aws.connect.psdb.cloud/finflex?charset=utf8mb4",
                        connect_args={"ssl": {
                          "ssl_ca": "/etc/ssl/cert.pem"
                        }})
@@ -131,12 +131,13 @@ def get_transactions(user_email, month_id):
 def store_asset(user_email, category, amount):
   with engine.connect() as conn:
     query = text(
-      "INSERT INTO assets (email, category, amount) VALUES (:user_email, :category, :amount) "
+      "INSERT INTO assets (email, category, amount, month) VALUES (:user_email, :category, :amount, :month_id) "
     )
     conn.execute(query, {
       "user_email": user_email,
       "category": category,
-      "amount": amount
+      "amount": amount,
+      "month_id": month_id
     })
 
 
@@ -161,9 +162,10 @@ def store_goal(user_email, amount, month_id, goal_amount):
 def get_assets_and_goal(user_email, month_id):
   with engine.connect() as conn:
     assets_query = text(
-      "SELECT category, ROUND(amount, 2) AS rounded_amount FROM assets WHERE email = :user_email")
+      "SELECT category, ROUND(amount, 2) AS rounded_amount FROM assets WHERE month = :month_id AND email = :user_email")
     assets_result = conn.execute(
       assets_query, {
+        "month_id": month_id,
         "user_email": user_email
       }
     )

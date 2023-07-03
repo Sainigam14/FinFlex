@@ -97,7 +97,7 @@ def home(month_id):
         category = request.form.get('categoryInput')
         amount = float(request.form.get('amountInput'))
         print(user_email, category, amount)
-        store_asset(user_email, category, amount)
+        store_asset(user_email, category, amount, month_id)
         return redirect(url_for('home', month_id=month_id))
 
       if form_name == 'goal':

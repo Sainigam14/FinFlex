@@ -87,7 +87,11 @@
               <tr>
                 <td class="ps-5" style="min-width: 2rem; max-width: 3rem;">{{ transaction.ID }}</td>
                 <td style="min-width: 3rem; max-width: 4rem;">{{ transaction.category }}</td>
-                <td style="min-width: 5rem; max-width: 15rem;">{{ transaction.description }}</td>
+                {% if transaction.description %}
+                  <td style="min-width: 5rem; max-width: 15rem;">{{ transaction.description }}</td>
+                {% else %}
+                  <td style="min-width: 5rem; max-width: 15rem;">-</td>
+                {% endif %}
                 <td style="min-width: 4rem;">{{ transaction.transaction_date }}</td>
                 <td style="min-width: 3rem;">{{ transaction.transaction_time }}</td>
                 {% if transaction.transaction_type == 'income' %}
