@@ -5,9 +5,9 @@ from datetime import datetime
 
 import os
 
-# my_secret = os.environ['DB_details']
+my_secret = os.environ['DB_details']
 
-engine = create_engine("mysql+pymysql://aud81kobxsrjk3n3u672:pscale_pw_FTPeNrPOUimb1OY27o5GGtswAkK26h8st3XDEprE6tW@aws.connect.psdb.cloud/finflex?charset=utf8mb4",
+engine = create_engine(my_secret,
                        connect_args={"ssl": {
                          "ssl_ca": "/etc/ssl/cert.pem"
                        }})
