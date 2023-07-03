@@ -128,7 +128,7 @@ def get_transactions(user_email, month_id):
     return transactions
 
 
-def store_asset(user_email, category, amount):
+def store_asset(user_email, category, amount, month_id):
   with engine.connect() as conn:
     query = text(
       "INSERT INTO assets (email, category, amount, month) VALUES (:user_email, :category, :amount, :month_id) "
@@ -162,10 +162,9 @@ def store_goal(user_email, amount, month_id, goal_amount):
 def get_assets_and_goal(user_email, month_id):
   with engine.connect() as conn:
     assets_query = text(
-      "SELECT category, ROUND(amount, 2) AS rounded_amount FROM assets WHERE month = :month_id AND email = :user_email")
+      "SELECT category, ROUND(amount, 2) AS rounded_amount FROM assets WHERE email = :user_email")
     assets_result = conn.execute(
       assets_query, {
-        "month_id": month_id,
         "user_email": user_email
       }
     )

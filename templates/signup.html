@@ -62,7 +62,6 @@
 
     a{
       color: white;
-      text-decoration: none;
     }
     #Already{
       padding-top: 20px;
@@ -122,8 +121,9 @@
       <div>
         <button type="submit" class="btn btn-light">Sign Up</button>
       </div>
-      <div id="Already">
-        <a href="{{ url_for('login') }}">Already have an account? Log In</a>
+      <div id="Already" class="d-flex justify-content-center">
+        <p class="m-0 pe-2">Already have an account?</p>
+        <a href="{{ url_for('login') }}">Log In</a>
       </div>
     </form>
   </div>

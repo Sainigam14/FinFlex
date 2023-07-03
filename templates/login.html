@@ -61,8 +61,8 @@
 
     a{
       color: white;
-      text-decoration: none;
     }
+    
     #New{
       padding-top: 20px;
     }
@@ -109,8 +109,9 @@
       <div>
         <button type="submit" class="btn btn-light">Log In</button>
       </div>
-      <div id="New">
-        <a href="{{ url_for('signup') }}">New user? Sign Up</a>
+      <div id="New" class="d-flex justify-content-center">
+        <p class="m-0 pe-2">New user?</p>
+        <a href="{{ url_for('signup') }}">Sign Up</a>
       </div>
     </form>
   </div>
