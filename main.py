@@ -23,17 +23,18 @@ def login():
     user = db_session.query(User).filter_by(email=email).first()
     db_session.close()
 
-    is_valid = bcrypt.check_password_hash(user.password, password)
-    print(is_valid)
-
-    if user and is_valid:
-      session['user_email'] = user.email
-      return redirect(url_for('home', month_id=month_id))
-    elif not user:
-      error_message = 'Please create an account'
-      return render_template('login.html', error_message=error_message)
+    if user :
+      is_valid = bcrypt.check_password_hash(user.password, password)
+      if is_valid:
+        session['user_email'] = user.email
+        return redirect(url_for('home', month_id=month_id))
+      
+      else:
+        error_message = 'Invalid password'
+        return render_template('login.html', error_message=error_message)
+      
     else:
-      error_message = 'Invalid password'
+      error_message = 'Please create an account'
       return render_template('login.html', error_message=error_message)
   if 'user_email' in session:
     return redirect(url_for('home', month_id=month_id))
