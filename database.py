@@ -194,13 +194,35 @@ def get_assets_and_goal(user_email, month_id):
     
     return assets, goal_amount
 
+def store_debt(user_email, loan_type, loan_provider, amount, interest_rate, duration, paid_amount):
+  with engine.connect() as conn:
+    store_debt_query = text("INSERT into debt_tracker (email, loan_type, loan_provider, amount, interest, duration, paid) VALUES (:user_email, :loan_type, :loan_provider, :amount, :interest_rate, :duration, :paid_amount)")
+    conn.execute(store_debt_query, {
+      "user_email": user_email,
+      "loan_type": loan_type,
+      "loan_provider": loan_provider,
+      "amount": amount,
+      "interest_rate": interest_rate,
+      "duration": duration,
+      "paid_amount": paid_amount
+    })
+def store_debt_paid(user_email, id, amount):
+  with engine.connect() as conn:
+    store_debt_paid_query = text("UPDATE debt_tracker SET paid = :amount WHERE id = :id")
+    conn.execute(store_debt_paid_query, {
+      "amount": amount,
+      "id": id
+    })
+
 def get_debts(user_email):
   with engine.connect() as conn:
-    debts_query = text("SELECT * FROM debt_tracker WHERE email = :user_email")
+    debts_query = text("SELECT * FROM debt_tracker WHERE email = :user_email ORDER BY id DESC")
     result = conn.execute(debts_query, {"user_email": user_email})
     debts = []
-
     for row in result.all():
       debt_dict = row._asdict()
+      if (not debt_dict['paid']):
+        (debt_dict['paid'])=0
+      debt_dict['remaining'] = ((debt_dict['amount']) + ((debt_dict['amount']) * ((debt_dict['interest'])/100) * ((debt_dict['duration'])/12))) - (debt_dict['paid'])
       debts.append(debt_dict)
     return debts

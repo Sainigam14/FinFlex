@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 from flask_bcrypt import Bcrypt
-from database import Session, User, store_expense, store_income, datetime, get_total_expense_and_income, get_transactions, store_asset, store_goal, get_assets_and_goal, get_debts
+from database import Session, User, store_expense, store_income, datetime, get_total_expense_and_income, get_transactions, store_asset, store_goal, get_assets_and_goal, get_debts, store_debt, store_debt_paid
 import plotly.graph_objects as go
 import plotly.express as px
 
@@ -221,7 +221,22 @@ def debttracker(month_id):
   if 'user_email' in session:
     user_email = session['user_email']
     if request.method == 'POST':
-      pass
+      form_name = request.form.get('form_name')
+      if form_name == 'debt':
+        loan_type = request.form.get('loanTypeInput')
+        loan_provider = request.form.get('loanProviderInput')
+        amount = request.form.get('amountInput')
+        interest_rate = request.form.get('interestRateInput')
+        duration = request.form.get('durationInput')
+        paid_amount = request.form.get('paidInput')
+        store_debt(user_email, loan_type, loan_provider, amount, interest_rate, duration, paid_amount)
+        return redirect(url_for('debttracker', month_id=month_id))
+
+      elif form_name == 'paid':
+        id = request.form.get('id')
+        amount = request.form.get('amountInput')
+        store_debt_paid(user_email, id, amount)
+        return redirect(url_for('debttracker', month_id=month_id))
 
     # Debt Tracker pie chart
     debts = get_debts(user_email)
@@ -249,7 +264,6 @@ def debttracker(month_id):
     # Generate the HTML code for the chart
     debt_chart = fig.to_html(full_html=False, config={'displayModeBar': False})
 
-    
     # Pass the chart to the template
     return render_template('debttracker.html', month_id=month_id, debt_chart=debt_chart, debts=debts)
 
