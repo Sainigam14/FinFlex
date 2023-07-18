@@ -64,7 +64,7 @@ grid-row: span 2;
 grid-column: span 2;
 }
 
-.Dummy{
+.Debt-Tracker{
 grid-row: span 2;
 }
 
@@ -219,8 +219,11 @@ Hello, <span class="fw-bold text-primary">{{ user.firstname }}</span>
 <div class="Income grid-item">
   <div class="text-primary fw-bold">Income</div>
 </div>
-<div class="Dummy grid-item">
-  <div class="text-primary fw-bold">Dummy</div>
+<div class="Debt-Tracker grid-item">
+    <div class="text-primary fw-bold">Debt Tracker</div>
+    <div class="overflow-y-scroll">
+    {{ debt_chart | safe }}
+    </div>
 </div>
 <div class="Income-Expenses grid-item">
   <div class="text-primary fw-bold">Income & Expenses</div>

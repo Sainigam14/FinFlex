@@ -8,9 +8,11 @@ app = Flask('__name__')
 bcrypt = Bcrypt(app)
 app.secret_key = 'my_secret_key'
 
+
 @app.route('/')
 def FinFlex():
   return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -23,16 +25,16 @@ def login():
     user = db_session.query(User).filter_by(email=email).first()
     db_session.close()
 
-    if user :
+    if user:
       is_valid = bcrypt.check_password_hash(user.password, password)
       if is_valid:
         session['user_email'] = user.email
         return redirect(url_for('home', month_id=month_id))
-      
+
       else:
         error_message = 'Invalid password'
         return render_template('login.html', error_message=error_message)
-      
+
     else:
       error_message = 'Please create an account'
       return render_template('login.html', error_message=error_message)
@@ -41,6 +43,7 @@ def login():
 
   # User is not logged in, redirect to login page
   return render_template('login.html')
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -83,6 +86,7 @@ def signup():
 @app.template_filter('abs')
 def filter_abs(value):
   return abs(value)
+
 
 # Protected route for the dashboard
 @app.route('/home/<month_id>', methods=['GET', 'POST'])
@@ -157,9 +161,7 @@ def home(month_id):
       tickcolor='blue'  # Color of the bottom border
     )
 
-    fig.update_yaxes(
-      visible=False
-    )
+    fig.update_yaxes(visible=False)
 
     fig.update_layout(title=None,
                       showlegend=False,
@@ -184,6 +186,7 @@ def home(month_id):
 
   # User is not logged in, redirect to login page
   return redirect('/login')
+
 
 @app.route('/home/personalfinance/<month_id>', methods=['GET', 'POST'])
 def personalfinance(month_id):
@@ -216,7 +219,8 @@ def personalfinance(month_id):
                            month_id=month_id)
   return redirect('/login')
 
-@app.route('/home/debttracker/<month_id>', methods=['GET','POST'])
+
+@app.route('/home/debttracker/<month_id>', methods=['GET', 'POST'])
 def debttracker(month_id):
   if 'user_email' in session:
     user_email = session['user_email']
@@ -229,7 +233,8 @@ def debttracker(month_id):
         interest_rate = request.form.get('interestRateInput')
         duration = request.form.get('durationInput')
         paid_amount = request.form.get('paidInput')
-        store_debt(user_email, loan_type, loan_provider, amount, interest_rate, duration, paid_amount)
+        store_debt(user_email, loan_type, loan_provider, amount, interest_rate,
+                   duration, paid_amount)
         return redirect(url_for('debttracker', month_id=month_id))
 
       elif form_name == 'paid':
@@ -243,15 +248,15 @@ def debttracker(month_id):
     labels = []
     values = []
     for debt in debts:
-      labels.append(debt['loan_provider']+'('+debt['loan_type']+')')
+      labels.append(debt['loan_provider'] + '(' + debt['loan_type'] + ')')
       values.append(debt['amount'])
-    
+
     # Create a pie chart
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0.5)])
-    
+
     # Update trace settings
     fig.update_traces(textinfo='none')
-    
+
     # Update layout settings
     fig.update_layout(
       showlegend=False,  # Remove the legend
@@ -260,14 +265,18 @@ def debttracker(month_id):
       plot_bgcolor=
       'rgba(0,0,0,0)'  # Set plot area background color to transparent
     )
-    
+
     # Generate the HTML code for the chart
     debt_chart = fig.to_html(full_html=False, config={'displayModeBar': False})
 
     # Pass the chart to the template
-    return render_template('debttracker.html', month_id=month_id, debt_chart=debt_chart, debts=debts)
+    return render_template('debttracker.html',
+                           month_id=month_id,
+                           debt_chart=debt_chart,
+                           debts=debts)
 
   return redirect('/login')
+
 
 @app.route('/home/transactions/<month_id>')
 def transactions(month_id):
@@ -293,6 +302,7 @@ def blog():
 def signout():
   session.clear()
   return redirect('/')
+
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080)

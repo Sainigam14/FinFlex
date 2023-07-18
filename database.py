@@ -133,41 +133,37 @@ def store_asset(user_email, category, amount, month_id):
     query = text(
       "INSERT INTO assets (email, category, amount, month) VALUES (:user_email, :category, :amount, :month_id) "
     )
-    conn.execute(query, {
-      "user_email": user_email,
-      "category": category,
-      "amount": amount,
-      "month_id": month_id
-    })
-
-
-def store_goal(user_email, amount, month_id, goal_amount):
-  with engine.connect() as conn:
-    if(goal_amount):
-      query = text(
-        "UPDATE savings_goal SET amount = :amount WHERE month = :month_id"
-      )
-    else:
-      query = text(
-        "INSERT INTO savings_goal (email, amount, month) VALUES (:user_email, :amount, :month_id)"
-      )
     conn.execute(
       query, {
         "user_email": user_email,
+        "category": category,
         "amount": amount,
         "month_id": month_id
       })
 
 
+def store_goal(user_email, amount, month_id, goal_amount):
+  with engine.connect() as conn:
+    if (goal_amount):
+      query = text(
+        "UPDATE savings_goal SET amount = :amount WHERE month = :month_id")
+    else:
+      query = text(
+        "INSERT INTO savings_goal (email, amount, month) VALUES (:user_email, :amount, :month_id)"
+      )
+    conn.execute(query, {
+      "user_email": user_email,
+      "amount": amount,
+      "month_id": month_id
+    })
+
+
 def get_assets_and_goal(user_email, month_id):
   with engine.connect() as conn:
     assets_query = text(
-      "SELECT category, ROUND(amount, 2) AS rounded_amount FROM assets WHERE email = :user_email")
-    assets_result = conn.execute(
-      assets_query, {
-        "user_email": user_email
-      }
+      "SELECT category, ROUND(amount, 2) AS rounded_amount FROM assets WHERE email = :user_email"
     )
+    assets_result = conn.execute(assets_query, {"user_email": user_email})
     assets = {}
 
     for row in assets_result:
@@ -177,52 +173,60 @@ def get_assets_and_goal(user_email, month_id):
       assets[category] = amount
 
     goal_query = text(
-      "SELECT COALESCE(ROUND(amount, 2), 0) AS rounded_amount FROM savings_goal WHERE month = :month_id AND email = :user_email")
-    goal_result = conn.execute(
-      goal_query, {
-        "month_id": month_id,
-        "user_email": user_email
-      }
+      "SELECT COALESCE(ROUND(amount, 2), 0) AS rounded_amount FROM savings_goal WHERE month = :month_id AND email = :user_email"
     )
+    goal_result = conn.execute(goal_query, {
+      "month_id": month_id,
+      "user_email": user_email
+    })
 
     row = goal_result.fetchone()
 
     if row is not None:
-        goal_amount = float(row[0])
+      goal_amount = float(row[0])
     else:
-        goal_amount = None
-    
+      goal_amount = None
+
     return assets, goal_amount
 
-def store_debt(user_email, loan_type, loan_provider, amount, interest_rate, duration, paid_amount):
+
+def store_debt(user_email, loan_type, loan_provider, amount, interest_rate,
+               duration, paid_amount):
   with engine.connect() as conn:
-    store_debt_query = text("INSERT into debt_tracker (email, loan_type, loan_provider, amount, interest, duration, paid) VALUES (:user_email, :loan_type, :loan_provider, :amount, :interest_rate, :duration, :paid_amount)")
-    conn.execute(store_debt_query, {
-      "user_email": user_email,
-      "loan_type": loan_type,
-      "loan_provider": loan_provider,
-      "amount": amount,
-      "interest_rate": interest_rate,
-      "duration": duration,
-      "paid_amount": paid_amount
-    })
+    store_debt_query = text(
+      "INSERT into debt_tracker (email, loan_type, loan_provider, amount, interest, duration, paid) VALUES (:user_email, :loan_type, :loan_provider, :amount, :interest_rate, :duration, :paid_amount)"
+    )
+    conn.execute(
+      store_debt_query, {
+        "user_email": user_email,
+        "loan_type": loan_type,
+        "loan_provider": loan_provider,
+        "amount": amount,
+        "interest_rate": interest_rate,
+        "duration": duration,
+        "paid_amount": paid_amount
+      })
+
+
 def store_debt_paid(user_email, id, amount):
   with engine.connect() as conn:
-    store_debt_paid_query = text("UPDATE debt_tracker SET paid = :amount WHERE id = :id")
-    conn.execute(store_debt_paid_query, {
-      "amount": amount,
-      "id": id
-    })
+    store_debt_paid_query = text(
+      "UPDATE debt_tracker SET paid = :amount WHERE id = :id")
+    conn.execute(store_debt_paid_query, {"amount": amount, "id": id})
+
 
 def get_debts(user_email):
   with engine.connect() as conn:
-    debts_query = text("SELECT * FROM debt_tracker WHERE email = :user_email ORDER BY id DESC")
+    debts_query = text(
+      "SELECT * FROM debt_tracker WHERE email = :user_email ORDER BY id DESC")
     result = conn.execute(debts_query, {"user_email": user_email})
     debts = []
     for row in result.all():
       debt_dict = row._asdict()
       if (not debt_dict['paid']):
-        (debt_dict['paid'])=0
-      debt_dict['remaining'] = ((debt_dict['amount']) + ((debt_dict['amount']) * ((debt_dict['interest'])/100) * ((debt_dict['duration'])/12))) - (debt_dict['paid'])
+        (debt_dict['paid']) = 0
+      debt_dict['remaining'] = ((debt_dict['amount']) + (
+        (debt_dict['amount']) * ((debt_dict['interest']) / 100) *
+        ((debt_dict['duration']) / 12))) - (debt_dict['paid'])
       debts.append(debt_dict)
     return debts
